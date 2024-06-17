@@ -41,8 +41,8 @@ export abstract class Preloader extends Phaser.Scene {
       );
 
       this.load.image(
-        "easter-tileset",
-        `${CONFIG.PROTECTED_IMAGE_URL}/world/easter-map-extruded.png`
+        "festival-of-colors-tileset",
+        `${CONFIG.PROTECTED_IMAGE_URL}/world/festival-of-colors-sequence-extruded.png`
       );
 
       this.load.image("speech_bubble", "world/speech_bubble.png");

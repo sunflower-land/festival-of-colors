@@ -324,6 +324,8 @@ export abstract class BaseScene extends Phaser.Scene {
       "Decorations Layer 2",
       "Decorations Layer 3",
       "Decorations Layer 4",
+      "Decorations Layer 5",
+      "Decorations Layer 6",
       "Building Layer 2",
       "Building Layer 3",
       "Building Layer 4",

@@ -67,7 +67,7 @@ export type PortalMachineState = State<Context, PortalEvent, PortalState>;
 
 export const portalMachine = createMachine({
   id: "portalMachine",
-  initial: "initialising",
+  initial: "playing", //"initialising",
   context: {
     id: 0,
     jwt: getJWT(),

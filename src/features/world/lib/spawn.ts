@@ -10,6 +10,12 @@ const randomXOffset = Math.random() * 60;
 const randomYOffset = Math.random() * 20;
 
 export const SPAWNS: () => SpawnLocation = () => ({
+  festival_of_colors: {
+    default: {
+      x: 600,
+      y: 550,
+    },
+  },
   goblin_house: {
     // Make sure everyone doesn't spawn in same spot
     default: {
