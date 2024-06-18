@@ -32,6 +32,7 @@ import { EmblemsTrading } from "./factions/emblemTrading/EmblemsTrading";
 import { ChoresModal } from "./factions/chores/ChoresModal";
 import { OuterPanel } from "components/ui/Panel";
 import { FactionKitchenPanel } from "./factions/FactionKitchenPanel";
+import { Bob } from "features/portal/examples/festivalOfColors/components/Bob";
 
 class NpcModalManager {
   private listener?: (npc: NPCName, isOpen: boolean) => void;
@@ -56,7 +57,7 @@ interface Props {
 }
 
 function getInitialNPC(scene: SceneId): NPCName | undefined {
-  return undefined;
+  return "bob";
 }
 
 export const NPCModals: React.FC<Props> = ({ scene, id }) => {
@@ -92,6 +93,8 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
             <CommunityDonations />
           </CloseButtonPanel>
         )}
+
+        {npc === "bob" && <Bob onClose={closeModal} />}
 
         {npc === "shelly" && <DeliveryPanel npc={npc} onClose={closeModal} />}
         {npc === "poppy" && <FlowerShop onClose={closeModal} />}

@@ -7,6 +7,7 @@ import { Preloader } from "features/world/scenes/Preloader";
 import { PortalContext } from "./lib/PortalProvider";
 import { useActor } from "@xstate/react";
 import { FestivalOfColorsScene } from "./FestivalOfColorsScene";
+import { NPCModals } from "features/world/ui/NPCModals";
 
 export const FestivalOfColoursGame: React.FC = () => {
   const { portalService } = useContext(PortalContext);
@@ -84,6 +85,11 @@ export const FestivalOfColoursGame: React.FC = () => {
   return (
     <div>
       <div id="game-content" ref={ref} />
+      <NPCModals
+        id={portalState.context.id as number}
+        scene={scene}
+        onNavigate={() => {}}
+      />
     </div>
   );
 };

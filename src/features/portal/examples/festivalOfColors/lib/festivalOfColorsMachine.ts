@@ -10,13 +10,23 @@ const getJWT = () => {
   return code;
 };
 
+export type Bomb = "Red" | "Green" | "Purple" | "Blue" | "Yellow";
 export interface Context {
   id: number;
   jwt: string;
   state: GameState;
+  hasPurchased: boolean;
+  paintBombs: Bomb[];
 }
 
-export type PortalEvent = { type: "RETRY" } | { type: "CONTINUE" };
+type CollectBombEvent = {
+  type: "COLLECT_BOMB";
+  bomb: Bomb;
+};
+export type PortalEvent =
+  | { type: "RETRY" }
+  | { type: "CONTINUE" }
+  | { type: "PURCHASED" };
 
 export type PortalState = {
   value:
@@ -47,6 +57,8 @@ export const festivalOfColorsMachine = createMachine({
     id: 0,
     jwt: getJWT(),
     state: CONFIG.API_URL ? undefined : OFFLINE_FARM,
+    hasPurchased: false,
+    paintBombs: [],
   },
   states: {
     initialising: {
@@ -77,6 +89,10 @@ export const festivalOfColorsMachine = createMachine({
             portalId: CONFIG.PORTAL_APP,
             token: context.jwt as string,
           });
+
+          // TODO - set paint bombs
+
+          // TODO - set whether they have paid today
 
           return { game, farmId };
         },
@@ -113,6 +129,17 @@ export const festivalOfColorsMachine = createMachine({
 
     playing: {
       on: {
+        PURCHASED: {
+          actions: assign({ hasPurchased: (context: any) => true }),
+        },
+        COLLECT_BOMB: {
+          actions: assign({
+            paintBombs: (context: any, event: CollectBombEvent) => [
+              ...(context.paintBombs || []),
+              event.bomb,
+            ],
+          }) as any,
+        },
         // X_COLLECTED: {
         //   actions: assign({
         //     score: (context: any, event) => {

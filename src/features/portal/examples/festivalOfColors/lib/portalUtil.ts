@@ -1,3 +1,4 @@
+import { InventoryItemName } from "features/game/types/game";
 import { CONFIG } from "lib/config";
 
 const isInIframe = window.self !== window.top;
@@ -18,12 +19,19 @@ export function goHome() {
   }
 }
 
-export function purchase({ sfl }: { sfl: number }) {
+export function purchase({
+  sfl,
+  items,
+}: {
+  sfl: number;
+  items: Partial<Record<InventoryItemName, number>>;
+}) {
   if (!isInIframe) {
     console.error(`Sunflower Land not available - are you in an iframe?`);
   }
 
-  window.parent.postMessage({ event: "purchase", sfl }, "*");
+  console.log("SEND OFF PURCHASE");
+  window.parent.postMessage({ event: "purchase", sfl, items }, "*");
 }
 
 export function played({ score }: { score: number }) {

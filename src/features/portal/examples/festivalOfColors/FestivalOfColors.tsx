@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { useActor, useSelector } from "@xstate/react";
 import { Modal } from "components/ui/Modal";

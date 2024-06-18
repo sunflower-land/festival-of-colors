@@ -1,6 +1,7 @@
 import { Equipped } from "features/game/types/bumpkin";
 
 export type NPCName =
+  | "bob"
   | "gambit"
   | "victoria"
   | "jester"
@@ -96,6 +97,17 @@ export type NPCName =
   | "flora";
 
 export const NPC_WEARABLES: Record<NPCName, Equipped> = {
+  bob: {
+    body: "Goblin Potion",
+    hair: "Wise Hair",
+    hat: "Chef Hat",
+    shirt: "Goblin Armor",
+    pants: "Goblin Pants",
+    tool: "Skinning Knife",
+    background: "Farm Background",
+    shoes: "Black Farmer Boots",
+    coat: "Chef Apron",
+  },
   "chef tuck": {
     body: "Goblin Potion",
     hair: "Wise Hair",
