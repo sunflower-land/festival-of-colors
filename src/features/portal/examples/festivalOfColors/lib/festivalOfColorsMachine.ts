@@ -75,12 +75,12 @@ export type PortalMachineState = State<Context, PortalEvent, PortalState>;
 
 export const festivalOfColorsMachine = createMachine({
   id: "festivalOfColorsMachine",
-  initial: "playing", //"initialising",
+  initial: "initialising",
   context: {
     id: 0,
     jwt: getJWT(),
     state: CONFIG.API_URL ? undefined : OFFLINE_FARM,
-    hasPurchased: false,
+    hasPurchased: true,
     paintBombs: getCollected(),
   },
   states: {
@@ -103,7 +103,12 @@ export const festivalOfColorsMachine = createMachine({
         src: async (context) => {
           const bombs = getCollected();
           if (!getUrl()) {
-            return { game: OFFLINE_FARM, attemptsLeft: 5, bombs };
+            return {
+              game: OFFLINE_FARM,
+              attemptsLeft: 5,
+              bombs,
+              hasPurchased: false,
+            };
           }
 
           const { farmId } = decodeToken(context.jwt as string);

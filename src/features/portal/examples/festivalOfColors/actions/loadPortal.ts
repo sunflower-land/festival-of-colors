@@ -11,7 +11,6 @@ type Request = {
 export const getUrl = () => {
   const network = new URLSearchParams(window.location.search).get("network");
 
-  console.log({ network });
   if (network && network === "mainnet") {
     return "https://api.sunflower-land.com";
   }

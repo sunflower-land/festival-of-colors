@@ -8,11 +8,11 @@ import yellowBomb from "assets/decorations/paintbomb_yellow.png";
 import purpleBomb from "assets/decorations/paintbomb_purple.png";
 import greenBomb from "assets/decorations/paintbomb_green.png";
 import giftIcon from "assets/icons/gift.png";
+
 import { Panel } from "components/ui/Panel";
 import { PortalContext } from "../lib/PortalProvider";
 import { useActor } from "@xstate/react";
 import { Box } from "components/ui/Box";
-import { InlineDialogue } from "features/world/ui/TypingMessage";
 import { Label } from "components/ui/Label";
 import { Button } from "components/ui/Button";
 import { RequirementLabel } from "components/ui/RequirementsLabel";
@@ -29,10 +29,9 @@ interface Props {
   onClose: () => void;
 }
 export const Bob: React.FC<Props> = ({ onClose }) => {
-  console.log("BOBBBY");
-  const [showIntro, setShowIntro] = useState(false);
   const { portalService } = useContext(PortalContext);
   const [portalState] = useActor(portalService);
+  const [showIntro, setShowIntro] = useState(!portalState.context.hasPurchased);
 
   const { inventory } = portalState.context.state;
 
@@ -87,15 +86,17 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
   }
 
   const dateKey = new Date().toISOString().split("T")[0];
-  const challenge = FESTIVAL_OF_COLORS_DAILY[dateKey];
+  const reward =
+    portalState.context.state.minigames.prizes["festival-of-colors"];
 
-  if (!challenge) {
+  if (!reward) {
     return (
       <Panel>
-        <span>Hmmm, looks like there is no challenge today</span>
+        <span>Hmmm, looks like there is no reward today</span>
       </Panel>
     );
   }
+  const challenge = FESTIVAL_OF_COLORS_DAILY[dateKey];
 
   const hasRequirements = getKeys(challenge.requires).every((item) =>
     (inventory[item] ?? new Decimal(0)).gte(challenge.requires[item] ?? 0)
@@ -104,6 +105,11 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
   const secondLeft = secondsTillReset();
 
   const bombs = portalState.context.paintBombs || [];
+
+  const claimedAt =
+    !!portalState.context.state.minigames.games["festival-of-colors"]?.history[
+      dateKey
+    ].prizeClaimedAt;
 
   if (portalState.context.hasPurchased) {
     return (
@@ -165,17 +171,21 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
               <span className="text-xs ml-1">Reward</span>
             </div>
             <Label type="warning">
-              <span>{`${getKeys(challenge.reward.items)
-                .map((name) => `${challenge.reward.items[name]}x${name}`)
-                .join(" ")} ${getKeys(challenge.reward.wearables)
-                .map((name) => `${challenge.reward.wearables[name]}x${name}`)
+              <span>{`${getKeys(reward.items)
+                .map((name) => `${reward.items[name]}x${name}`)
+                .join(" ")} ${getKeys(reward.wearables)
+                .map((name) => `${reward.wearables[name]}x${name}`)
                 .join(" ")}`}</span>
             </Label>
           </div>
         </div>
-        <Button disabled={bombs.length < 5} onClick={() => complete()}>
-          Claim reward
-        </Button>
+        {claimedAt ? (
+          <Label type="success">Claimed</Label>
+        ) : (
+          <Button disabled={bombs.length < 5} onClick={() => complete()}>
+            Claim reward
+          </Button>
+        )}
       </Panel>
     );
   }
@@ -229,17 +239,17 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
             <span className="text-xs ml-1">Reward</span>
           </div>
           <Label type="warning">
-            <span>{`${getKeys(challenge.reward.items)
-              .map((name) => `${challenge.reward.items[name]}x${name}`)
-              .join(" ")} ${getKeys(challenge.reward.wearables)
-              .map((name) => `${challenge.reward.wearables[name]}x${name}`)
+            <span>{`${getKeys(reward.items)
+              .map((name) => `${reward.items[name]}x${name}`)
+              .join(" ")} ${getKeys(reward.wearables)
+              .map((name) => `${reward.wearables[name]}x${name}`)
               .join(" ")}`}</span>
           </Label>
         </div>
       </div>
       <Button
         disabled={!hasRequirements}
-        onClick={() => purchase({ sfl: 0, items: { Eggplant: 25 } })}
+        onClick={() => purchase({ sfl: 0, items: challenge.requires })}
       >
         Start
       </Button>

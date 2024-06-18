@@ -16,6 +16,7 @@ import yellowBomb from "assets/decorations/paintbomb_yellow.png";
 import purpleBomb from "assets/decorations/paintbomb_purple.png";
 import greenBomb from "assets/decorations/paintbomb_green.png";
 import { Bomb } from "../lib/festivalOfColorsMachine";
+import { Inventory } from "features/island/hud/components/inventory/Inventory";
 
 export const BOMB_TO_IMAGE: Record<Bomb, string> = {
   Blue: blueBomb,
@@ -46,6 +47,12 @@ export const FestivalOfColorsHUD: React.FC = () => {
             portalState.context.state.inventory["Block Buck"] ?? new Decimal(0)
           }
         />
+        <Inventory
+          state={portalState.context.state}
+          isFarming={false}
+          isFullUser={false}
+        />
+
         <div
           className="fixed z-50 flex "
           style={{

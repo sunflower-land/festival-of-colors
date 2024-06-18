@@ -4,21 +4,13 @@ import { Coordinates } from "features/game/expansion/components/MapPlacement";
 
 type DailyChallenge = {
   requires: Partial<Record<InventoryItemName, number>>;
-  reward: {
-    items: Partial<Record<InventoryItemName, number>>;
-    wearables: Wardrobe;
-  };
   message: string;
   bombs: Record<Bomb, Coordinates>;
 };
 
 export const FESTIVAL_OF_COLORS_DAILY: Record<string, DailyChallenge> = {
   "2024-06-18": {
-    requires: { Eggplant: 10 },
-    reward: {
-      items: { Mark: 2 },
-      wearables: {},
-    },
+    requires: { Sunflower: 10 },
     message: "Today is purple day!",
     bombs: {
       Blue: { x: 580, y: 560 },

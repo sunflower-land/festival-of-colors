@@ -352,7 +352,18 @@ export const INITIAL_FARM: GameState = {
 
   minigames: {
     games: {},
-    prizes: {},
+    prizes: {
+      "festival-of-colors": {
+        coins: 100,
+        endAt: new Date().getTime() + 10000,
+        startAt: new Date().getTime(),
+        score: 5,
+        items: {
+          Sunflower: 5,
+        },
+        wearables: {},
+      },
+    },
   },
 
   megastore: {

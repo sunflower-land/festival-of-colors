@@ -85,7 +85,12 @@ export const FestivalOfColors: React.FC = () => {
     <div>
       {portalState.matches("introduction") && (
         <Modal show>
-          <Panel bumpkinParts={NPC_WEARABLES.chicken}>INTRO</Panel>
+          <Panel bumpkinParts={NPC_WEARABLES.chicken}>
+            INTRO
+            <Button onClick={() => portalService.send("CONTINUE")}>
+              Continue
+            </Button>
+          </Panel>
         </Modal>
       )}
 

@@ -57,7 +57,7 @@ interface Props {
 }
 
 function getInitialNPC(scene: SceneId): NPCName | undefined {
-  return "bob";
+  return undefined;
 }
 
 export const NPCModals: React.FC<Props> = ({ scene, id }) => {

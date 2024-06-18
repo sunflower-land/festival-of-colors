@@ -37,15 +37,11 @@ export const Inventory: React.FC<Props> = ({
   onDepositClick,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { pathname } = useLocation();
 
   const inventory = useSound("inventory");
 
   // The actions included in this more buttons should not be shown if the player is in goblin retreat or visiting another farm
-  const limitedInventory =
-    pathname.includes("retreat") ||
-    pathname.includes("visit") ||
-    pathname.includes("dawn-breaker");
+  const limitedInventory = true;
 
   const buds = getKeys(state.buds ?? {}).map(
     (budId) => `Bud-${budId}` as BudName
