@@ -21,11 +21,11 @@ export const FESTIVAL_OF_COLORS_DAILY: Record<string, DailyChallenge> = {
     },
     message: "Today is purple day!",
     bombs: {
-      Blue: { x: 580, y: 540 },
-      Green: { x: 560, y: 540 },
-      Purple: { x: 540, y: 540 },
-      Red: { x: 520, y: 540 },
-      Yellow: { x: 500, y: 540 },
+      Blue: { x: 580, y: 560 },
+      Green: { x: 560, y: 560 },
+      Purple: { x: 540, y: 560 },
+      Red: { x: 520, y: 560 },
+      Yellow: { x: 500, y: 560 },
     },
   },
 };

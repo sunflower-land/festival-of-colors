@@ -4,7 +4,29 @@ import { assign, createMachine, Interpreter, State } from "xstate";
 import { getUrl, loadPortal } from "../actions/loadPortal";
 import { CONFIG } from "lib/config";
 import { decodeToken } from "features/auth/actions/login";
+import { played } from "./portalUtil";
 
+function saveCollected(bomb: Bomb) {
+  const dateKey = new Date().toISOString().split("T")[0];
+
+  const previous = getCollected();
+
+  const all = [...previous, bomb];
+
+  // Remove duplicates
+  const unique = all.filter((item, index) => all.indexOf(item) === index);
+
+  localStorage.setItem(dateKey, JSON.stringify(unique));
+}
+
+function getCollected(): Bomb[] {
+  const dateKey = new Date().toISOString().split("T")[0];
+
+  const items = localStorage.getItem(dateKey);
+
+  console.log({ items, dateKey });
+  return items ? (JSON.parse(items) as Bomb[]) : [];
+}
 const getJWT = () => {
   const code = new URLSearchParams(window.location.search).get("jwt");
   return code;
@@ -26,7 +48,8 @@ type CollectBombEvent = {
 export type PortalEvent =
   | { type: "RETRY" }
   | { type: "CONTINUE" }
-  | { type: "PURCHASED" };
+  | { type: "PURCHASED" }
+  | CollectBombEvent;
 
 export type PortalState = {
   value:
@@ -58,7 +81,7 @@ export const festivalOfColorsMachine = createMachine({
     jwt: getJWT(),
     state: CONFIG.API_URL ? undefined : OFFLINE_FARM,
     hasPurchased: false,
-    paintBombs: [],
+    paintBombs: getCollected(),
   },
   states: {
     initialising: {
@@ -78,8 +101,9 @@ export const festivalOfColorsMachine = createMachine({
       id: "loading",
       invoke: {
         src: async (context) => {
+          const bombs = getCollected();
           if (!getUrl()) {
-            return { game: OFFLINE_FARM, attemptsLeft: 5 };
+            return { game: OFFLINE_FARM, attemptsLeft: 5, bombs };
           }
 
           const { farmId } = decodeToken(context.jwt as string);
@@ -90,11 +114,18 @@ export const festivalOfColorsMachine = createMachine({
             token: context.jwt as string,
           });
 
-          // TODO - set paint bombs
+          const purchases =
+            game.minigames.games["festival-of-colors"]?.purchases ?? [];
 
-          // TODO - set whether they have paid today
+          const dateKey = new Date().toISOString().split("T")[0];
 
-          return { game, farmId };
+          const hasPurchased = purchases.some(
+            (purchase) =>
+              new Date(purchase.purchasedAt).toISOString().split("T")[0] ===
+              dateKey
+          );
+
+          return { game, farmId, bombs, hasPurchased };
         },
         onDone: [
           {
@@ -102,6 +133,8 @@ export const festivalOfColorsMachine = createMachine({
             actions: assign({
               state: (_: any, event) => event.data.game,
               id: (_: any, event) => event.data.farmId,
+              paintBombs: (_: any, event) => event.data.bombs,
+              hasPurchased: (_: any, event) => event.data.hasPurchased,
             }),
           },
         ],
@@ -133,12 +166,19 @@ export const festivalOfColorsMachine = createMachine({
           actions: assign({ hasPurchased: (context: any) => true }),
         },
         COLLECT_BOMB: {
-          actions: assign({
-            paintBombs: (context: any, event: CollectBombEvent) => [
-              ...(context.paintBombs || []),
-              event.bomb,
-            ],
-          }) as any,
+          actions: [
+            assign({
+              paintBombs: (context: any, event: CollectBombEvent) => [
+                ...(context.paintBombs || []),
+                event.bomb,
+              ],
+            }) as any,
+            (context, event: CollectBombEvent) => {
+              saveCollected(event.bomb);
+
+              played({ score: context.paintBombs.length + 1 });
+            },
+          ],
         },
         // X_COLLECTED: {
         //   actions: assign({

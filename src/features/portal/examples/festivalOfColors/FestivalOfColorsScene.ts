@@ -89,6 +89,7 @@ export class FestivalOfColorsScene extends BaseScene {
           console.log("COLLIDE!");
           bomb.destroy();
           confetti();
+          this.portalService?.send("COLLECT_BOMB", { bomb: name });
         }
       );
     });

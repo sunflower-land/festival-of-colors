@@ -23,6 +23,7 @@ import { FESTIVAL_OF_COLORS_DAILY } from "../lib/festivalOfColors";
 import { secondsTillReset } from "features/helios/components/hayseedHank/HayseedHankV2";
 import { secondsToString } from "lib/utils/time";
 import { getKeys } from "features/game/types/craftables";
+import { SUNNYSIDE } from "assets/sunnyside";
 
 interface Props {
   onClose: () => void;
@@ -102,6 +103,8 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
 
   const secondLeft = secondsTillReset();
 
+  const bombs = portalState.context.paintBombs || [];
+
   if (portalState.context.hasPurchased) {
     return (
       <Panel>
@@ -115,11 +118,36 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
             })} left`}</Label>
           </div>
           <div className="flex mb-1">
-            <Box image={blueBomb} />
-            <Box image={redBomb} />
-            <Box image={greenBomb} />
-            <Box image={purpleBomb} />
-            <Box image={yellowBomb} />
+            <Box
+              image={blueBomb}
+              secondaryImage={
+                bombs.includes("Blue") ? SUNNYSIDE.icons.confirm : undefined
+              }
+            />
+            <Box
+              image={redBomb}
+              secondaryImage={
+                bombs.includes("Red") ? SUNNYSIDE.icons.confirm : undefined
+              }
+            />
+            <Box
+              image={greenBomb}
+              secondaryImage={
+                bombs.includes("Green") ? SUNNYSIDE.icons.confirm : undefined
+              }
+            />
+            <Box
+              image={purpleBomb}
+              secondaryImage={
+                bombs.includes("Purple") ? SUNNYSIDE.icons.confirm : undefined
+              }
+            />
+            <Box
+              image={yellowBomb}
+              secondaryImage={
+                bombs.includes("Yellow") ? SUNNYSIDE.icons.confirm : undefined
+              }
+            />
           </div>
 
           <div
@@ -145,7 +173,7 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
             </Label>
           </div>
         </div>
-        <Button disabled onClick={() => complete()}>
+        <Button disabled={bombs.length < 5} onClick={() => complete()}>
           Claim reward
         </Button>
       </Panel>
