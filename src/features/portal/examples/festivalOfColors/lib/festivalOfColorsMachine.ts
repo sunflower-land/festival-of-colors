@@ -106,7 +106,7 @@ export const festivalOfColorsMachine = createMachine({
               game: OFFLINE_FARM,
               attemptsLeft: 5,
               bombs,
-              hasPurchased: false,
+              hasPurchased: true,
             };
           }
 

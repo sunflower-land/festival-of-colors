@@ -5,7 +5,6 @@ import { SceneId } from "features/world/mmoMachine";
 import { BaseScene, NPCBumpkin } from "features/world/scenes/BaseScene";
 import { Bomb, MachineInterpreter } from "./lib/festivalOfColorsMachine";
 import { FESTIVAL_OF_COLORS_DAILY } from "./lib/festivalOfColors";
-import { getKeys } from "features/game/types/craftables";
 import { goHome } from "./lib/portalUtil";
 import { Coordinates } from "features/game/expansion/components/MapPlacement";
 
@@ -17,7 +16,7 @@ export const NPCS: NPCBumpkin[] = [
     direction: "left",
   },
   {
-    x: 475,
+    x: 473,
     y: 285,
     npc: "rodolfo",
   },
@@ -74,7 +73,7 @@ export class FestivalOfColorsScene extends BaseScene {
       }
     });
 
-    const waterfall = this.add.sprite(417.5, 672, "waterfall");
+    const waterfall = this.add.sprite(401.5, 656, "waterfall");
     this.anims.create({
       key: "waterfall_anim",
       frames: this.anims.generateFrameNumbers("waterfall", {
@@ -87,7 +86,7 @@ export class FestivalOfColorsScene extends BaseScene {
     waterfall.play("waterfall_anim", true);
     waterfall.setDepth(1000000);
 
-    const portal = this.add.sprite(637.5, 541.5, "portal");
+    const portal = this.add.sprite(621.5, 525.5, "portal");
     this.anims.create({
       key: "portal_anim",
       frames: this.anims.generateFrameNumbers("portal", {
