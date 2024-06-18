@@ -6,6 +6,7 @@ import { BaseScene, NPCBumpkin } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "./lib/festivalOfColorsMachine";
 import { FESTIVAL_OF_COLORS_DAILY } from "./lib/festivalOfColors";
 import { getKeys } from "features/game/types/craftables";
+import { goHome } from "./lib/portalUtil";
 
 export const NPCS: NPCBumpkin[] = [
   {
@@ -44,6 +45,14 @@ export class FestivalOfColorsScene extends BaseScene {
     this.load.image("Green", "world/paintbomb_green.png");
     this.load.image("Yellow", "world/paintbomb_yellow.png");
     this.load.image("Purple", "world/paintbomb_purple.png");
+    this.load.spritesheet("waterfall", "world/waterfall_sheet.png", {
+      frameWidth: 159,
+      frameHeight: 260,
+    });
+    this.load.spritesheet("portal", "world/color_portal.webp", {
+      frameWidth: 47,
+      frameHeight: 47,
+    });
   }
   async create() {
     this.map = this.make.tilemap({
@@ -62,6 +71,34 @@ export class FestivalOfColorsScene extends BaseScene {
       if (event.type === "PURCHASED") {
         this.addPaintBombs();
       }
+    });
+
+    const waterfall = this.add.sprite(417.5, 672, "waterfall");
+    this.anims.create({
+      key: "waterfall_anim",
+      frames: this.anims.generateFrameNumbers("waterfall", {
+        start: 0,
+        end: 10,
+      }),
+      repeat: -1,
+      frameRate: 10,
+    });
+    waterfall.play("waterfall_anim", true);
+    waterfall.setDepth(1000000);
+
+    const portal = this.add.sprite(637.5, 541.5, "portal");
+    this.anims.create({
+      key: "portal_anim",
+      frames: this.anims.generateFrameNumbers("portal", {
+        start: 0,
+        end: 10,
+      }),
+      repeat: -1,
+      frameRate: 10,
+    });
+    portal.play("portal_anim", true);
+    portal.setInteractive({ cursor: "pointer" }).on("pointerdown", () => {
+      goHome();
     });
   }
 
@@ -86,6 +123,8 @@ export class FestivalOfColorsScene extends BaseScene {
         .setOffset(3, 3)
         .setImmovable(true)
         .setCollideWorldBounds(true);
+
+      bomb.setDepth(1000000000);
 
       this.physics.add.overlap(
         this.currentPlayer as Phaser.GameObjects.GameObject,
