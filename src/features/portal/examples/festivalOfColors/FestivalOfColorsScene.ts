@@ -3,10 +3,11 @@ import tileset from "assets/map/festival_of_colors_tileset.json";
 import confetti from "canvas-confetti";
 import { SceneId } from "features/world/mmoMachine";
 import { BaseScene, NPCBumpkin } from "features/world/scenes/BaseScene";
-import { MachineInterpreter } from "./lib/festivalOfColorsMachine";
+import { Bomb, MachineInterpreter } from "./lib/festivalOfColorsMachine";
 import { FESTIVAL_OF_COLORS_DAILY } from "./lib/festivalOfColors";
 import { getKeys } from "features/game/types/craftables";
 import { goHome } from "./lib/portalUtil";
+import { Coordinates } from "features/game/expansion/components/MapPlacement";
 
 export const NPCS: NPCBumpkin[] = [
   {
@@ -16,8 +17,8 @@ export const NPCS: NPCBumpkin[] = [
     direction: "left",
   },
   {
-    x: 650,
-    y: 550,
+    x: 475,
+    y: 285,
     npc: "rodolfo",
   },
 ];
@@ -106,14 +107,26 @@ export class FestivalOfColorsScene extends BaseScene {
     const dateKey = new Date().toISOString().split("T")[0];
     const challenge = FESTIVAL_OF_COLORS_DAILY[dateKey];
 
+    const day1Layer = this.map.getLayer(challenge.layer)?.tilemapLayer;
+    const coordinates: Coordinates[] = [];
+    day1Layer?.forEachTile((obj) => {
+      if (obj.index === -1) return;
+
+      coordinates.push({
+        x: obj.pixelX,
+        y: obj.pixelY,
+      });
+    });
+
     const collected = this.portalService?.state.context.paintBombs;
 
-    getKeys(challenge.bombs).forEach((name) => {
+    const bombs: Bomb[] = ["Red", "Blue", "Green", "Yellow", "Purple"];
+    bombs.forEach((name, index) => {
       if (collected?.includes(name)) return;
 
       const bomb = this.add.sprite(
-        challenge.bombs[name].x,
-        challenge.bombs[name].y,
+        coordinates[index].x,
+        coordinates[index].y,
         name
       );
       this.physics.world.enable(bomb);

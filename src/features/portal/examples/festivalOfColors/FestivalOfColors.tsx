@@ -19,6 +19,10 @@ import { PortalMachineState } from "./lib/festivalOfColorsMachine";
 import { Loading } from "features/auth/components";
 import { CONFIG } from "lib/config";
 import { WalletProvider } from "features/wallet/WalletProvider";
+import {
+  SpeakingModal,
+  SpeakingText,
+} from "features/game/components/SpeakingModal";
 
 export const FestivalOfColorsApp: React.FC = () => {
   return (
@@ -87,13 +91,22 @@ export const FestivalOfColors: React.FC = () => {
   return (
     <div>
       {portalState.matches("introduction") && (
-        <Modal show>
-          <Panel bumpkinParts={NPC_WEARABLES.chicken}>
-            INTRO
-            <Button onClick={() => portalService.send("CONTINUE")}>
-              Continue
-            </Button>
-          </Panel>
+        <Modal show onHide={() => portalService.send("CONTINUE")}>
+          <SpeakingModal
+            bumpkinParts={NPC_WEARABLES.rodolfo}
+            message={[
+              {
+                text: "Howdy Bumpkin, welcome to the Festival of Colors!",
+              },
+              {
+                text: "This is an event designed by the community for the community.",
+              },
+              {
+                text: "You can earn daily rewards by completing missions. Explore the island and speak to Bob to get started.",
+              },
+            ]}
+            onClose={() => portalService.send("CONTINUE")}
+          />
         </Modal>
       )}
 

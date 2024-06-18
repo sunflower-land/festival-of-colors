@@ -93,6 +93,7 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
     return (
       <Panel>
         <span>Hmmm, looks like there is no reward today</span>
+        <Button onClick={onClose}>Close</Button>
       </Panel>
     );
   }
@@ -179,13 +180,18 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
             </Label>
           </div>
         </div>
-        {claimedAt ? (
-          <Label type="success">Claimed</Label>
-        ) : (
-          <Button disabled={bombs.length < 5} onClick={() => complete()}>
-            Claim reward
+        <div className="flex">
+          <Button className="mr-1" onClick={onClose}>
+            Close
           </Button>
-        )}
+          {claimedAt ? (
+            <Label type="success">Claimed</Label>
+          ) : (
+            <Button disabled={bombs.length < 5} onClick={() => complete()}>
+              Claim reward
+            </Button>
+          )}
+        </div>
       </Panel>
     );
   }
@@ -211,9 +217,6 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
         <Label className="-ml-1  mb-1" type="default">
           Entry fee
         </Label>
-        <div className="mb-2">
-          <span className="text-sm mb-2">{challenge.message}</span>
-        </div>
         {getKeys(challenge.requires).map((item) => (
           <RequirementLabel
             key={item}
@@ -247,12 +250,17 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
           </Label>
         </div>
       </div>
-      <Button
-        disabled={!hasRequirements}
-        onClick={() => purchase({ sfl: 0, items: challenge.requires })}
-      >
-        Start
-      </Button>
+      <div className="flex">
+        <Button className="mr-1" onClick={onClose}>
+          Close
+        </Button>
+        <Button
+          disabled={!hasRequirements}
+          onClick={() => purchase({ sfl: 0, items: challenge.requires })}
+        >
+          Start
+        </Button>
+      </div>
     </Panel>
   );
 };
