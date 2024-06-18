@@ -18,14 +18,17 @@ import { goHome } from "./lib/portalUtil";
 import { PortalMachineState } from "./lib/festivalOfColorsMachine";
 import { Loading } from "features/auth/components";
 import { CONFIG } from "lib/config";
+import { WalletProvider } from "features/wallet/WalletProvider";
 
 export const FestivalOfColorsApp: React.FC = () => {
   return (
-    <PortalProvider>
-      <Ocean>
-        <FestivalOfColors />
-      </Ocean>
-    </PortalProvider>
+    <WalletProvider>
+      <PortalProvider>
+        <Ocean>
+          <FestivalOfColors />
+        </Ocean>
+      </PortalProvider>
+    </WalletProvider>
   );
 };
 

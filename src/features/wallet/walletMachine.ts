@@ -201,7 +201,8 @@ export const walletMachine = createMachine<Context, WalletEvent, WalletState>({
         },
         {
           target: "signing",
-          cond: (context) => !context.linkedAddress,
+          cond: (context) =>
+            !context.linkedAddress && context.action !== "donate",
         },
         {
           target: "missingNFT",

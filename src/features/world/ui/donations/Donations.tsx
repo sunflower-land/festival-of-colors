@@ -7,7 +7,7 @@ import { CONFIG } from "lib/config";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { Button } from "components/ui/Button";
 import { Label } from "components/ui/Label";
-import { GameWallet } from "features/wallet/Wallet";
+import { GameWallet, PortalWallet, Wallet } from "features/wallet/Wallet";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 
 const VALID_INTEGER = new RegExp(/^\d+$/);
@@ -38,12 +38,13 @@ const CONTRIBUTORS = [
   "default",
 ];
 
+const DONATION_ADDRESS = "0xE336EF65aC5532C0BfeFF52e350B22F96E784b6F";
+
 export const CommunityDonations: React.FC = () => {
   const { t } = useAppTranslation();
 
   const [state, send] = useMachine(donationMachine);
   const [donation, setDonation] = useState(1);
-  const CHRISTMAS_EVENT_DONATION_ADDRESS = CONFIG.CHRISTMAS_EVENT_DONATION;
   const onDonationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // If keyboard input "" convert to 0
     // Typed input validation will happen in onBlur
@@ -64,7 +65,7 @@ export const CommunityDonations: React.FC = () => {
   const donate = () => {
     send("DONATE", {
       donation,
-      to: CHRISTMAS_EVENT_DONATION_ADDRESS,
+      to: DONATION_ADDRESS,
     });
   };
 
@@ -154,12 +155,12 @@ export const CommunityDonations: React.FC = () => {
         </div>
       )}
       {state.matches("confirming") && (
-        <GameWallet action="donate">
+        <PortalWallet action="donate">
           <p className="m-2">{`${donation} (MATIC)`}</p>
           <Button className="w-full ml-1" onClick={donate}>
             <span className="text-xs whitespace-nowrap">{t("confirm")}</span>
           </Button>
-        </GameWallet>
+        </PortalWallet>
       )}
     </>
   );

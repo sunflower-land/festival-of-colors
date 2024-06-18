@@ -14,6 +14,11 @@ export const NPCS: NPCBumpkin[] = [
     npc: "bob",
     direction: "left",
   },
+  {
+    x: 650,
+    y: 550,
+    npc: "rodolfo",
+  },
 ];
 
 export class FestivalOfColorsScene extends BaseScene {
@@ -86,7 +91,6 @@ export class FestivalOfColorsScene extends BaseScene {
         this.currentPlayer as Phaser.GameObjects.GameObject,
         bomb as Phaser.GameObjects.GameObject,
         () => {
-          console.log("COLLIDE!");
           bomb.destroy();
           confetti();
           this.portalService?.send("COLLECT_BOMB", { bomb: name });
