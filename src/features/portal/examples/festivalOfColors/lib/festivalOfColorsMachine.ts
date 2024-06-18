@@ -24,7 +24,6 @@ function getCollected(): Bomb[] {
 
   const items = localStorage.getItem(dateKey);
 
-  console.log({ items, dateKey });
   return items ? (JSON.parse(items) as Bomb[]) : [];
 }
 const getJWT = () => {
@@ -169,29 +168,22 @@ export const festivalOfColorsMachine = createMachine({
       on: {
         PURCHASED: {
           actions: assign({ hasPurchased: (context: any) => true }),
-        },
+        } as any,
         COLLECT_BOMB: {
           actions: [
             assign({
-              paintBombs: (context: any, event: CollectBombEvent) => [
+              paintBombs: (context: any, event) => [
                 ...(context.paintBombs || []),
-                event.bomb,
+                (event as CollectBombEvent).bomb,
               ],
             }) as any,
-            (context, event: CollectBombEvent) => {
+            ((context: Context, event: CollectBombEvent) => {
               saveCollected(event.bomb);
 
               played({ score: context.paintBombs.length + 1 });
-            },
+            }) as any,
           ],
-        },
-        // X_COLLECTED: {
-        //   actions: assign({
-        //     score: (context: any, event) => {
-        //       return context.score + (event as ChickenRescuedEvent).points;
-        //     },
-        //   }) as any,
-        // },
+        } as any,
       },
     },
 
