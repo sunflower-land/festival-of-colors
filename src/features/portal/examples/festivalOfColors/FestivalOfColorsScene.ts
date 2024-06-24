@@ -61,6 +61,12 @@ export class FestivalOfColorsScene extends BaseScene {
 
     super.create();
 
+    this.layers["Day 1"].setVisible(false);
+    this.layers["Day 2"].setVisible(false);
+    this.layers["Day 3"].setVisible(false);
+    this.layers["Day 4"].setVisible(false);
+    this.layers["Day 5"].setVisible(false);
+
     this.initialiseNPCs(NPCS);
 
     if (this.portalService?.state.context.hasPurchased) {

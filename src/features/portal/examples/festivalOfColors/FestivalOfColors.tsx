@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
 
+import logo from "assets/brand/logo_v2.png";
+
 import { useActor, useSelector } from "@xstate/react";
 import { Modal } from "components/ui/Modal";
 import { Panel } from "components/ui/Panel";
@@ -78,6 +80,8 @@ export const FestivalOfColors: React.FC = () => {
   if (portalState.matches("loading")) {
     return (
       <Modal show>
+        <img id="logo" src={logo} className="w-full mb-2" />
+
         <Panel>
           <Loading />
           <span className="text-xs">

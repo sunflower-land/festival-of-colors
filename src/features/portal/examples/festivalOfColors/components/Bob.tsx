@@ -157,7 +157,7 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
             />
           </div>
 
-          <span className="text-xs mb-1">
+          <span className="text-xs mb-2">
             Walk around and find the Paint Bombs.
           </span>
 
