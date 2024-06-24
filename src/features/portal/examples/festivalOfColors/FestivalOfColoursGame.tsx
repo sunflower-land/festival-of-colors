@@ -85,11 +85,7 @@ export const FestivalOfColoursGame: React.FC = () => {
   return (
     <div>
       <div id="game-content" ref={ref} />
-      <NPCModals
-        id={portalState.context.id as number}
-        scene={scene}
-        onNavigate={() => {}}
-      />
+      <NPCModals id={portalState.context.id as number} scene={scene} />
     </div>
   );
 };

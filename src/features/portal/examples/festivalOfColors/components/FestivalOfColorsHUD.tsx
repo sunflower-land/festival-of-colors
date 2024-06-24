@@ -51,6 +51,7 @@ export const FestivalOfColorsHUD: React.FC = () => {
           state={portalState.context.state}
           isFarming={false}
           isFullUser={false}
+          hideActions
         />
 
         <div
