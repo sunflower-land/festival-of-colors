@@ -110,7 +110,7 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
   const claimedAt =
     !!portalState.context.state.minigames.games["festival-of-colors"]?.history[
       dateKey
-    ].prizeClaimedAt;
+    ]?.prizeClaimedAt;
 
   if (portalState.context.hasPurchased) {
     return (
