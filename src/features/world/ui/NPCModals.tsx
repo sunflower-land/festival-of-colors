@@ -17,7 +17,6 @@ import {
 import { Finn } from "./npcs/Finn";
 import { GoldTooth } from "./npcs/GoldTooth";
 import { Mayor } from "./npcs/Mayor";
-import { FlowerShop } from "./flowerShop/FlowerShop";
 import { DecorationShopItems } from "features/helios/components/decorations/component/DecorationShopItems";
 import { Stylist } from "./stylist/Stylist";
 import { AuctionHouseModal } from "./AuctionHouseModal";
@@ -33,6 +32,9 @@ import { ChoresModal } from "./factions/chores/ChoresModal";
 import { OuterPanel } from "components/ui/Panel";
 import { FactionKitchenPanel } from "./factions/FactionKitchenPanel";
 import { Bob } from "features/portal/examples/festivalOfColors/components/Bob";
+import { PortalNPCExample } from "features/portal/example/components/PortalNPCExample";
+import { FlowerShop } from "./flowerShop/FlowerShop";
+import { FactionShop } from "./factionShop/FactionShop";
 
 class NpcModalManager {
   private listener?: (npc: NPCName, isOpen: boolean) => void;
@@ -51,7 +53,6 @@ class NpcModalManager {
 export const npcModalManager = new NpcModalManager();
 
 interface Props {
-  onNavigate: (sceneId: SceneId) => void;
   scene: SceneId;
   id: number;
 }
@@ -96,6 +97,7 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
 
         {npc === "bob" && <Bob onClose={closeModal} />}
 
+        {npc === "portaller" && <PortalNPCExample onClose={closeModal} />}
         {npc === "shelly" && <DeliveryPanel npc={npc} onClose={closeModal} />}
         {npc === "poppy" && <FlowerShop onClose={closeModal} />}
         {npc === "frankie" && <DecorationShopItems onClose={closeModal} />}
@@ -251,6 +253,7 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
         {npc === "chef lumen" && (
           <FactionKitchenPanel bumpkinParts={NPC_WEARABLES["chef lumen"]} />
         )}
+        {npc === "eldric" && <FactionShop onClose={closeModal} />}
       </Modal>
 
       {npc === "hammerin harry" && (

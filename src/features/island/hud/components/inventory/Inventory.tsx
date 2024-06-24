@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import PubSub from "pubsub-js";
+import React, { useEffect, useState } from "react";
 import { Box } from "components/ui/Box";
 import { InventoryItemsModal } from "./InventoryItemsModal";
 import { ITEM_DETAILS } from "features/game/types/images";
@@ -9,7 +10,6 @@ import { CollectibleName, getKeys } from "features/game/types/craftables";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { getChestItems } from "./utils/inventory";
 import { KNOWN_IDS } from "features/game/types";
-import { useLocation } from "react-router-dom";
 import { BudName } from "features/game/types/buds";
 import { useSound } from "lib/utils/hooks/useSound";
 
@@ -23,6 +23,7 @@ interface Props {
   onDepositClick?: () => void;
   isFarming: boolean;
   isSaving?: boolean;
+  hideActions: boolean;
 }
 
 export const Inventory: React.FC<Props> = ({
@@ -35,6 +36,7 @@ export const Inventory: React.FC<Props> = ({
   onPlace,
   onPlaceBud,
   onDepositClick,
+  hideActions,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,6 +44,16 @@ export const Inventory: React.FC<Props> = ({
 
   // The actions included in this more buttons should not be shown if the player is in goblin retreat or visiting another farm
   const limitedInventory = true;
+
+  useEffect(() => {
+    const eventSubscription = PubSub.subscribe("OPEN_INVENTORY", () => {
+      setIsOpen(true);
+    });
+
+    return () => {
+      PubSub.unsubscribe(eventSubscription);
+    };
+  }, []);
 
   const buds = getKeys(state.buds ?? {}).map(
     (budId) => `Bud-${budId}` as BudName
@@ -105,7 +117,7 @@ export const Inventory: React.FC<Props> = ({
           />
         </div>
 
-        {!limitedInventory && (
+        {!hideActions && (
           <div
             className="flex flex-col items-center"
             style={{
