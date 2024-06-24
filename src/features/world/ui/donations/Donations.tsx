@@ -21,11 +21,7 @@ import classNames from "classnames";
 
 const CONTRIBUTORS = [
   "JC",
-  "Kotob",
-  "whaitte",
-  "Ventin",
   "shinon",
-  "PurpleDvrnk",
   "SFWhat",
   "Andand0",
   "Telk",
@@ -34,8 +30,8 @@ const CONTRIBUTORS = [
   "Netherzapdos",
   "LittleEins",
   "Poro",
-  "Mr Findlay",
   "default",
+  "Kohi",
 ];
 
 const DONATION_ADDRESS = "0xE336EF65aC5532C0BfeFF52e350B22F96E784b6F";

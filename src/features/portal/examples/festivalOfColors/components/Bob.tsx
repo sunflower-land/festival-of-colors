@@ -157,6 +157,10 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
             />
           </div>
 
+          <span className="text-xs mb-1">
+            Walk around and find the Paint Bombs.
+          </span>
+
           <div
             className="flex justify-between w-full"
             style={{
