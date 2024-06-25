@@ -252,11 +252,17 @@ export const Bob: React.FC<Props> = ({ onClose }) => {
             <span className="text-xs ml-1">Reward</span>
           </div>
           <Label type="warning">
-            <span>{`${getKeys(reward.items)
-              .map((name) => `${reward.items[name]}x${name}`)
-              .join(" ")} ${getKeys(reward.wearables)
-              .map((name) => `${reward.wearables[name]}x${name}`)
-              .join(" ")}`}</span>
+            <span>
+              {[
+                ...getKeys(reward.items).map(
+                  (name) => `${reward.items[name]}x${name}`
+                ),
+                ...getKeys(reward.wearables).map(
+                  (name) => `${reward.wearables[name]}x${name}`
+                ),
+                reward.coins ? `${reward.coins} coins` : undefined,
+              ].join(" ")}
+            </span>
           </Label>
         </div>
       </div>
