@@ -18,7 +18,7 @@ import { NFTMigrating, NFTMinting, NFTWaiting } from "./components/NFTMinting";
 import { WalletContext } from "./WalletProvider";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { Loading } from "features/auth/components";
-import { PortalContext } from "features/portal/example/lib/PortalProvider";
+import { PortalContext } from "features/portal/examples/festivalOfColors/lib/PortalProvider";
 
 interface Props {
   action: WalletAction;
@@ -323,6 +323,7 @@ export const PortalWallet: React.FC<Props> = ({
   const [portalState] = useActor(portalService);
 
   const { walletService } = useContext(WalletContext);
+  console.log("This far");
 
   useEffect(() => {
     walletService.send("INITIALISE", {
