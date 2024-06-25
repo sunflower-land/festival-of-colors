@@ -3,11 +3,10 @@ import React, { ChangeEvent, useState } from "react";
 import { donationMachine } from "features/community/merchant/lib/donationMachine";
 import { useMachine } from "@xstate/react";
 import { Loading, roundToOneDecimal } from "features/auth/components";
-import { CONFIG } from "lib/config";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { Button } from "components/ui/Button";
 import { Label } from "components/ui/Label";
-import { GameWallet, PortalWallet, Wallet } from "features/wallet/Wallet";
+import { GameWallet, PortalWallet } from "features/wallet/Wallet";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 
 const VALID_INTEGER = new RegExp(/^\d+$/);
@@ -32,6 +31,7 @@ const CONTRIBUTORS = [
   "Poro",
   "default",
   "Kohi",
+  "Whaitte",
 ];
 
 const DONATION_ADDRESS = "0xE336EF65aC5532C0BfeFF52e350B22F96E784b6F";

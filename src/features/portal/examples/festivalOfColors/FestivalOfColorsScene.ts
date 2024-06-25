@@ -24,6 +24,8 @@ export const NPCS: NPCBumpkin[] = [
 
 export class FestivalOfColorsScene extends BaseScene {
   sceneId: SceneId = "festival_of_colors";
+  private audioWaterfall!: Phaser.Sound.BaseSound;
+  private waterfallSprite!: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({
@@ -45,6 +47,7 @@ export class FestivalOfColorsScene extends BaseScene {
     this.load.image("Green", "world/paintbomb_green.png");
     this.load.image("Yellow", "world/paintbomb_yellow.png");
     this.load.image("Purple", "world/paintbomb_purple.png");
+    this.load.audio("audioWaterfall", "world/soundWaterfall.mp3");
     this.load.spritesheet("waterfall", "world/waterfall_sheet.png", {
       frameWidth: 159,
       frameHeight: 260,
@@ -54,6 +57,7 @@ export class FestivalOfColorsScene extends BaseScene {
       frameHeight: 47,
     });
   }
+
   async create() {
     this.map = this.make.tilemap({
       key: "festival_of_colors",
@@ -79,7 +83,7 @@ export class FestivalOfColorsScene extends BaseScene {
       }
     });
 
-    const waterfall = this.add.sprite(401.5, 656, "waterfall");
+    this.waterfallSprite = this.add.sprite(401.5, 656, "waterfall");
     this.anims.create({
       key: "waterfall_anim",
       frames: this.anims.generateFrameNumbers("waterfall", {
@@ -89,8 +93,14 @@ export class FestivalOfColorsScene extends BaseScene {
       repeat: -1,
       frameRate: 10,
     });
-    waterfall.play("waterfall_anim", true);
-    waterfall.setDepth(1000000);
+    this.waterfallSprite.play("waterfall_anim", true);
+    this.waterfallSprite.setDepth(1000000);
+
+    this.audioWaterfall = this.sound.add("audioWaterfall", {
+      loop: true,
+      volume: 0,
+    });
+    this.audioWaterfall.play();
 
     const portal = this.add.sprite(621.5, 525.5, "portal");
     this.anims.create({
@@ -106,6 +116,34 @@ export class FestivalOfColorsScene extends BaseScene {
     portal.setInteractive({ cursor: "pointer" }).on("pointerdown", () => {
       goHome();
     });
+  }
+
+  update() {
+    super.update();
+
+    if (this.currentPlayer && this.waterfallSprite) {
+      const distance = Phaser.Math.Distance.Between(
+        this.currentPlayer.x,
+        this.currentPlayer.y,
+        this.waterfallSprite.x,
+        this.waterfallSprite.y
+      );
+
+      const maxDistance = 300;
+      const minVolume = 0.1;
+      const maxVolume = 1;
+
+      let volume = minVolume;
+      if (distance < maxDistance) {
+        volume = Phaser.Math.Linear(
+          maxVolume,
+          minVolume,
+          distance / maxDistance
+        );
+      }
+
+      (this.audioWaterfall as any).setVolume(volume);
+    }
   }
 
   private addPaintBombs() {
