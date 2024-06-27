@@ -17,6 +17,7 @@ const MAX_SFL = 150;
 
 import walletIcon from "assets/icons/wallet.png";
 import classNames from "classnames";
+import { donate as portalDonate } from "features/portal/lib/portalUtil";
 
 const CONTRIBUTORS = [
   "JC",
@@ -158,6 +159,102 @@ export const CommunityDonations: React.FC = () => {
           </Button>
         </PortalWallet>
       )}
+    </>
+  );
+};
+
+export const PortalDonations: React.FC<{ onClose: () => void }> = ({
+  onClose,
+}) => {
+  const { t } = useAppTranslation();
+
+  const [donation, setDonation] = useState(1);
+
+  const onDonationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // If keyboard input "" convert to 0
+    // Typed input validation will happen in onBlur
+    setDonation(roundToOneDecimal(Number(e.target.value)));
+  };
+  const incrementDonation = () => {
+    setDonation((prevState) => roundToOneDecimal(prevState + 0.1));
+  };
+
+  const decrementDonation = () => {
+    if (donation === 0.2) {
+      setDonation(0.2);
+    } else if (donation < 0.2) {
+      setDonation(0.1);
+    } else setDonation((prevState) => roundToOneDecimal(prevState - 0.1));
+  };
+
+  const donate = () => {
+    portalDonate({
+      matic: donation,
+      address: DONATION_ADDRESS,
+    });
+
+    onClose();
+  };
+
+  return (
+    <>
+      <div className="flex flex-col mb-1 p-2 text-sm">
+        <p className="mb-2 text-center">{t("donation.one")}</p>
+
+        <div className="flex flex-wrap mt-1 mb-2 justify-center">
+          {CONTRIBUTORS.map((name) => (
+            <Label
+              key={name}
+              type="chill"
+              icon={SUNNYSIDE.icons.heart}
+              className="mr-3 mb-1"
+            >
+              {name}
+            </Label>
+          ))}
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="flex">
+            <input
+              type="number"
+              className="text-shadow shadow-inner shadow-black bg-brown-200 w-24 p-1 text-center"
+              step="0.1"
+              min={0.1}
+              value={donation}
+              required
+              onChange={onDonationChange}
+              onBlur={() => {
+                if (donation < 0.1) setDonation(0.1);
+              }}
+            />
+            <div className="flex flex-col justify-between">
+              <img
+                src={SUNNYSIDE.icons.arrow_up}
+                alt="increment donation value"
+                className="cursor-pointer"
+                onClick={incrementDonation}
+              />
+              <img
+                src={SUNNYSIDE.icons.arrow_down}
+                alt="decrement donation value"
+                className="cursor-pointer"
+                onClick={decrementDonation}
+              />
+            </div>
+          </div>
+          <span className="text-xs font-secondary my-2">
+            {t("amount.matic")}
+          </span>
+        </div>
+
+        <Button
+          className="w-full ml-1"
+          onClick={donate}
+          disabled={donation < 0.1}
+        >
+          <span className="text-xs whitespace-nowrap">{t("donate")}</span>
+        </Button>
+      </div>
     </>
   );
 };
